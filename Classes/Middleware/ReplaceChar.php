@@ -18,14 +18,13 @@ class ReplaceChar implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
- $response = $handler->handle($request);
+        $response = $handler->handle($request);
         $content = (string)$response->getBody();
-//        $content = (string)$response->getBody();
 
         $content = str_replace('ß', 'ss', $content);
         $body = new Stream('php://temp', 'rw');
         $body->write($content);
-//
+
         $request = $request->withBody($body);
         return $handler->handle($request);
     }
